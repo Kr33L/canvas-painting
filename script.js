@@ -1,17 +1,28 @@
-const clearButton = document.querySelector("#clear");
+const clearButton = document.querySelector('#clear');
+const { canvas, ctx } = getCanvas();
+
+const LINE_THICKNESS = 5;
+
 let isDrawing = false;
 
+clearButton.addEventListener('click', () => {
+	clearCanvas(getCanvas());
+});
+
+canvas.addEventListener('mousedown', onMouseDown);
+canvas.addEventListener('mousemove', onMouseMove);
+canvas.addEventListener('mouseup', onMouseUp);
+
 function getCanvas() {
-	const canvas = document.querySelector("canvas");
-	const ctx = canvas.getContext("2d");
+	const canvas = document.querySelector('canvas');
+	const ctx = canvas.getContext('2d');
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
 	return { canvas, ctx };
 }
 
 function clearCanvas({ ctx, canvas }) {
-	const { width, height } = canvas;
-	ctx.clearRect(0, 0, width, height);
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 function drawCircle(ctx, x, y, radius) {
@@ -20,20 +31,17 @@ function drawCircle(ctx, x, y, radius) {
 	ctx.fill();
 }
 
-function onMouseMove(event) {
-	if (!isDrawing) return;
-	const { ctx } = getCanvas();
-	drawCircle(ctx, event.clientX, event.clientY, 5);
+function onMouseDown() {
+	isDrawing = true;
 }
 
-function changeBrushSize() {}
+function onMouseMove(event) {
+	if (isDrawing === false) return;
+	drawCircle(ctx, event.clientX, event.clientY, LINE_THICKNESS);
+}
 
-clearButton.addEventListener("click", clearCanvas(getCanvas()));
+function onMouseUp() {
+	isDrawing = false;
+}
 
-const canvas = getCanvas().canvas;
-canvas.addEventListener("mousedown", () => {
-	canvas.addEventListener("mousemove", onMouseMove);
-	canvas.addEventListener("mouseup", () => {
-		canvas.removeEventListener("mousemove", onMouseMove);
-	});
-});
+//function changeBrushSize() {}

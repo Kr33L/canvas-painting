@@ -1,17 +1,53 @@
-const clearButton = document.querySelector('#clear');
 const { canvas, ctx } = getCanvas();
+const { radius1, radius2, radius3, radius4, radius5 } = getRadiusButtons();
+const { clearButton } = getFunctionalButtons();
 
-const LINE_THICKNESS = 5;
-
+let mousePosition = { x: 0, y: 0 };
+let lineThickness = 10;
+let lineColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
 let isDrawing = false;
-
-clearButton.addEventListener('click', () => {
-	clearCanvas(getCanvas());
-});
 
 canvas.addEventListener('mousedown', onMouseDown);
 canvas.addEventListener('mousemove', onMouseMove);
 canvas.addEventListener('mouseup', onMouseUp);
+
+clearButton.addEventListener('click', clearCanvas);
+
+function drawLine(event) {
+	ctx.beginPath();
+	ctx.moveTo(mousePosition.x, mousePosition.y);
+	ctx.lineTo(event.clientX, event.clientY);
+	ctx.strokeStyle = lineColor;
+	ctx.lineWidth = lineThickness;
+	ctx.stroke();
+	ctx.closePath();
+}
+
+function onMouseDown(event) {
+	isDrawing = true;
+	mousePosition = { x: event.clientX, y: event.clientY };
+}
+
+function onMouseMove(event) {
+	if (isDrawing === false) return;
+	drawLine(event);
+	lineColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+	mousePosition = { x: event.clientX, y: event.clientY };
+}
+
+function onMouseUp() {
+	isDrawing = false;
+}
+
+function clearCanvas() {
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function changeRadius(radius) {
+	lineThickness = radius;
+}
+
+// The Returners™
 
 function getCanvas() {
 	const canvas = document.querySelector('canvas');
@@ -21,27 +57,16 @@ function getCanvas() {
 	return { canvas, ctx };
 }
 
-function clearCanvas({ ctx, canvas }) {
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
+function getRadiusButtons() {
+	const radius1 = document.querySelector('#thickness-1');
+	const radius2 = document.querySelector('#thickness-2');
+	const radius3 = document.querySelector('#thickness-3');
+	const radius4 = document.querySelector('#thickness-4');
+	const radius5 = document.querySelector('#thickness-5');
+	return { radius1, radius2, radius3, radius4, radius5 };
 }
 
-function drawCircle(ctx, x, y, radius) {
-	ctx.beginPath();
-	ctx.arc(x, y, radius, 0, Math.PI * 2, false);
-	ctx.fill();
+function getFunctionalButtons() {
+	const clearButton = document.querySelector('#clear');
+	return { clearButton };
 }
-
-function onMouseDown() {
-	isDrawing = true;
-}
-
-function onMouseMove(event) {
-	if (isDrawing === false) return;
-	drawCircle(ctx, event.clientX, event.clientY, LINE_THICKNESS);
-}
-
-function onMouseUp() {
-	isDrawing = false;
-}
-
-//function changeBrushSize() {}

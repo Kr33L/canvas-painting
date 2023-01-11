@@ -15,12 +15,49 @@
 	left: 0.5rem;
 }
 
-.thickness-1 {
-	background-color: hsl(0, 0%, 100%);
-	cursor: pointer;
+.flex {
+	display: flex;
+	flex-direction: column-reverse;
+	justify-content: center;
+	align-items: center;
 	position: absolute;
-	font-size: 1rem;
-	padding: 0.5rem;
-	top: 1rem;
+	background-color: hsl(0, 0%, 100%);
+	padding: 0.2rem;
+	border-radius: 10px;
+	gap: 0.5rem;
+	top: 5rem;
+	left: 1rem;
+}
+
+.thick {
+	background-color: black;
+	cursor: pointer;
+	border: none;
+	border-radius: 50%;
 	right: 1rem;
+}
+
+.thickness-1 {
+	padding: 4px;
+	top: 1rem;
+}
+
+.thickness-2 {
+	padding: 6px;
+	top: 3rem;
+}
+
+.thickness-3 {
+	padding: 8px;
+	top: 5rem;
+}
+
+.thickness-4 {
+	padding: 10px;
+	top: 7rem;
+}
+
+.thickness-5 {
+	padding: 12px;
+	top: 9rem;
 }

@@ -3,9 +3,16 @@ const { radius1, radius2, radius3, radius4, radius5 } = getRadiusButtons();
 const { clearButton } = getFunctionalButtons();
 
 let mousePosition = { x: 0, y: 0 };
-let lineThickness = 10;
+let lineThickness = radius1;
 let lineColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
 let isDrawing = false;
+let moveTimer = 0;
+
+radius1.addEventListener('click', () => changeRadius(4));
+radius2.addEventListener('click', () => changeRadius(6));
+radius3.addEventListener('click', () => changeRadius(8));
+radius4.addEventListener('click', () => changeRadius(10));
+radius5.addEventListener('click', () => changeRadius(12));
 
 canvas.addEventListener('mousedown', onMouseDown);
 canvas.addEventListener('mousemove', onMouseMove);
@@ -31,7 +38,14 @@ function onMouseDown(event) {
 function onMouseMove(event) {
 	if (isDrawing === false) return;
 	drawLine(event);
-	lineColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+	moveTimer++;
+	console.log(moveTimer);
+
+	if (moveTimer >= 25) {
+		lineColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+		moveTimer = 0;
+	}
+
 	mousePosition = { x: event.clientX, y: event.clientY };
 }
 
@@ -46,6 +60,8 @@ function clearCanvas() {
 function changeRadius(radius) {
 	lineThickness = radius;
 }
+
+// function downloadCanvas() {
 
 // The Returners™
 
